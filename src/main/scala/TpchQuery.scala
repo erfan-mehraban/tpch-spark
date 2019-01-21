@@ -31,7 +31,7 @@ abstract class TpchQuery {
 
 object TpchQuery {
 
-  def executeQueries(spark: SparkSession, schemaProvider: TpchSchemaProvider, queryNum: Int): ListBuffer[(String, Float)] = {
+  def executeQueries(spark: SparkSession, schemaProvider: TpchSchemaProvider, fromNum: Int, toNum: Int): ListBuffer[(String, Float)] = {
 
     val results = new ListBuffer[(String, Float)]
 
@@ -54,10 +54,9 @@ object TpchQuery {
 
   def main(args: Array[String]): Unit = {
 
-    var queryNum = -1;
-    if (args.length > 0)
-      queryNum = args(0).toInt
-    var extension = args(1)
+    var fromNum = args(0).toInt;
+    var toNum = args(1).toInt;
+    var extension = args(2)
 
     val spark = SparkSession
       .builder()
@@ -71,7 +70,7 @@ object TpchQuery {
     val schemaProvider = new TpchSchemaProvider(spark, INPUT_DIR, extension)
 
     val output = new ListBuffer[(String, Float)]
-    output ++= executeQueries(spark, schemaProvider, queryNum)
+    output ++= executeQueries(spark, schemaProvider, fromNum, toNum)
 
     val outFile = new File("TIMES.txt")
     val bw = new BufferedWriter(new FileWriter(outFile, true))
