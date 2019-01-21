@@ -52,7 +52,7 @@ object TpchQuery {
 
     var fromNum = 1;
     var toNum = 22;
-    if (queryNum != 0) {
+    if (queryNum != -1) {
       fromNum = queryNum;
       toNum = queryNum;
     }
@@ -76,11 +76,11 @@ object TpchQuery {
 
   def main(args: Array[String]): Unit = {
 
-    var queryNum = 0;
+    var queryNum = -1;
     if (args.length > 0)
       queryNum = args(0).toInt
 
-    val conf = new SparkConf().setAppName("Simple Application")
+    val conf = new SparkConf().setAppName("Spark-TPCH Benchmark")
     val sc = new SparkContext(conf)
 
     // read files from local FS

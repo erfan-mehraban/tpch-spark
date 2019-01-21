@@ -11,7 +11,7 @@ savvas@purdue.edu
 
 First compile using:
 
-```
+```bash
 sbt package
 ```
 
@@ -20,11 +20,11 @@ location the of the input data and where the output should be saved.
 
 You can then run a query using:
 
-```
+```bash
 spark-submit --class "main.scala.TpchQuery" --master MASTER target/scala-2.11/spark-tpc-h-queries_2.11-1.0.jar ##
 ```
 
-where ## is the number of the query to run e.g 1, 2, ..., 22
+where ## is the number of the query to run e.g 1, 2, ..., 22 (if it is -1, all queries will be executed)
 and MASTER specifies the spark-mode e.g local, yarn, standalone etc...
 
 
