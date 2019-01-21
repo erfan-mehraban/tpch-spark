@@ -38,10 +38,7 @@ object TpchQuery {
     for (queryNo <- fromNum to toNum) {
       val start_time = System.nanoTime()
       val query = Class.forName(f"main.scala.Q${queryNo}%02d").newInstance.asInstanceOf[TpchQuery]
-      val dstat_process = 
-        Process("dstat -lcmdrsyTt --full --output /root/"+queryNo+".dstat")
-        #> new File("/dev/null")
-        .run
+      val dstat_process = Process("dstat -lcmdrsyTt --full --output /root/"+queryNo+".dstat").run
       query.execute(spark, schemaProvider).collect()
       dstat_process.destroy()
       val end_time = System.nanoTime()
