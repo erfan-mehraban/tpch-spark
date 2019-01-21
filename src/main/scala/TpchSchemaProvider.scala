@@ -1,6 +1,6 @@
 package main.scala
 
-import org.apache.spark.SparkContext
+import org.apache.spark.sql.SparkSession
 
 // TPC-H table schemas
 case class Customer(
@@ -80,37 +80,23 @@ case class Supplier(
   s_acctbal: Double,
   s_comment: String)
 
-class TpchSchemaProvider(sc: SparkContext, inputDir: String) {
+class TpchSchemaProvider(spark: SparkSession, inputDir: String, extension: String) {
 
-  // this is used to implicitly convert an RDD to a DataFrame.
-  val sqlContext = new org.apache.spark.sql.SQLContext(sc)
-  import sqlContext.implicits._
+  var format_type = extension
+  if (extension == "avro"){
+    format_type = "com.databricks.spark.avro"
+  }
 
   val dfMap = Map(
-    "customer" -> sc.textFile(inputDir + "/customer.tbl*").map(_.split('|')).map(p =>
-      Customer(p(0).trim.toLong, p(1).trim, p(2).trim, p(3).trim.toLong, p(4).trim, p(5).trim.toDouble, p(6).trim, p(7).trim)).toDF(),
-
-    "lineitem" -> sc.textFile(inputDir + "/lineitem.tbl*").map(_.split('|')).map(p =>
-      Lineitem(p(0).trim.toLong, p(1).trim.toLong, p(2).trim.toLong, p(3).trim.toLong, p(4).trim.toDouble, p(5).trim.toDouble, p(6).trim.toDouble, p(7).trim.toDouble, p(8).trim, p(9).trim, p(10).trim, p(11).trim, p(12).trim, p(13).trim, p(14).trim, p(15).trim)).toDF(),
-
-    "nation" -> sc.textFile(inputDir + "/nation.tbl*").map(_.split('|')).map(p =>
-      Nation(p(0).trim.toLong, p(1).trim, p(2).trim.toLong, p(3).trim)).toDF(),
-
-    "region" -> sc.textFile(inputDir + "/region.tbl*").map(_.split('|')).map(p =>
-      Region(p(0).trim.toLong, p(1).trim, p(2).trim)).toDF(),
-
-    "order" -> sc.textFile(inputDir + "/orders.tbl*").map(_.split('|')).map(p =>
-      Order(p(0).trim.toLong, p(1).trim.toLong, p(2).trim, p(3).trim.toDouble, p(4).trim, p(5).trim, p(6).trim, p(7).trim.toLong, p(8).trim)).toDF(),
-
-    "part" -> sc.textFile(inputDir + "/part.tbl*").map(_.split('|')).map(p =>
-      Part(p(0).trim.toLong, p(1).trim, p(2).trim, p(3).trim, p(4).trim, p(5).trim.toLong, p(6).trim, p(7).trim.toDouble, p(8).trim)).toDF(),
-
-    "partsupp" -> sc.textFile(inputDir + "/partsupp.tbl*").map(_.split('|')).map(p =>
-      Partsupp(p(0).trim.toLong, p(1).trim.toLong, p(2).trim.toLong, p(3).trim.toDouble, p(4).trim)).toDF(),
-
-    "supplier" -> sc.textFile(inputDir + "/supplier.tbl*").map(_.split('|')).map(p =>
-      Supplier(p(0).trim.toLong, p(1).trim, p(2).trim, p(3).trim.toLong, p(4).trim, p(5).trim.toDouble, p(6).trim)).toDF())
-
+    "customer" -> spark.read.format(format_type).load(inputDir+"customer."+extension),
+    "lineitem" -> spark.read.format(format_type).load(inputDir+"lineitem."+extension),
+    "nation" -> spark.read.format(format_type).load(inputDir+"nation."+extension),
+    "region" -> spark.read.format(format_type).load(inputDir+"region."+extension),
+    "order" -> spark.read.format(format_type).load(inputDir+"orders."+extension),
+    "part" -> spark.read.format(format_type).load(inputDir+"part."+extension),
+    "partsupp" -> spark.read.format(format_type).load(inputDir+"partsupp."+extension),
+    "supplier" -> spark.read.format(format_type).load(inputDir+"supplier."+extension)
+  )
   // for implicits
   val customer = dfMap.get("customer").get
   val lineitem = dfMap.get("lineitem").get

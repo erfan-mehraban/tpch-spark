@@ -1,7 +1,6 @@
 package main.scala
 
-import org.apache.spark.SparkContext
-import org.apache.spark.SparkConf
+import org.apache.spark.sql.SparkSession
 import java.io.BufferedWriter
 import java.io.File
 import java.io.FileWriter
@@ -28,7 +27,7 @@ abstract class TpchQuery {
   /**
    *  implemented in children classes and hold the actual query
    */
-  def execute(sc: SparkContext, tpchSchemaProvider: TpchSchemaProvider): DataFrame
+  def execute(spark: SparkSession, tpchSchemaProvider: TpchSchemaProvider): DataFrame
 }
 
 object TpchQuery {
@@ -62,7 +61,7 @@ object TpchQuery {
 
       val query = Class.forName(f"main.scala.Q${queryNo}%02d").newInstance.asInstanceOf[TpchQuery]
 
-      outputDF(query.execute(sc, schemaProvider), OUTPUT_DIR, query.getName())
+      query.execute(spark, schemaProvider).show()
 
       val t1 = System.nanoTime()
 
@@ -79,20 +78,21 @@ object TpchQuery {
     var queryNum = -1;
     if (args.length > 0)
       queryNum = args(0).toInt
+    var extension = args(1)
 
-    val conf = new SparkConf().setAppName("Spark-TPCH Benchmark")
-    val sc = new SparkContext(conf)
-
-    // read files from local FS
-    val INPUT_DIR = "file://" + new File(".").getAbsolutePath() + "/dbgen"
+    val spark = SparkSession
+      .builder()
+      .config("spark.sql.orc.impl", "native")
+      .appName("Spark-TPCH Benchmark")
+      .getOrCreate()
 
     // read from hdfs
-    // val INPUT_DIR: String = "/dbgen"
+    val INPUT_DIR = "hdfs://namenode:8020/"
 
-    val schemaProvider = new TpchSchemaProvider(sc, INPUT_DIR)
+    val schemaProvider = new TpchSchemaProvider(spark, INPUT_DIR, extension)
 
     val output = new ListBuffer[(String, Float)]
-    output ++= executeQueries(sc, schemaProvider, queryNum)
+    output ++= executeQueries(spark, schemaProvider, queryNum)
 
     val outFile = new File("TIMES.txt")
     val bw = new BufferedWriter(new FileWriter(outFile, true))
