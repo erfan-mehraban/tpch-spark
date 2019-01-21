@@ -1,6 +1,7 @@
 package main.scala
 
 import scala.sys.process.Process
+import java.io.File
 import org.apache.spark.sql.SparkSession
 import java.io.BufferedWriter
 import java.io.File
@@ -12,9 +13,6 @@ import scala.collection.mutable.ListBuffer
  * Parent class for TPC-H queries.
  *
  * Defines schemas for tables and reads pipe ("|") separated text files into these tables.
- *
- * Savvas Savvides <savvas@purdue.edu>
- *
  */
 abstract class TpchQuery {
 
@@ -37,17 +35,13 @@ object TpchQuery {
 
     val results = new ListBuffer[(String, Float)]
 
-    var fromNum = 1;
-    var toNum = 22;
-    if (queryNum != -1) {
-      fromNum = queryNum;
-      toNum = queryNum;
-    }
-
     for (queryNo <- fromNum to toNum) {
       val start_time = System.nanoTime()
       val query = Class.forName(f"main.scala.Q${queryNo}%02d").newInstance.asInstanceOf[TpchQuery]
-      val dstat_process = Process(s"dstat -lcmdrsyTt --full --output /root/"+queryNo+".dstat").run
+      val dstat_process = 
+        Process("dstat -lcmdrsyTt --full --output /root/"+queryNo+".dstat")
+        #> new File("/dev/null")
+        .run
       query.execute(spark, schemaProvider).collect()
       dstat_process.destroy()
       val end_time = System.nanoTime()
