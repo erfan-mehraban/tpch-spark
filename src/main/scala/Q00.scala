@@ -14,7 +14,7 @@ class Q00 extends TpchQuery {
 
   override def execute(spark: SparkSession, schemaProvider: TpchSchemaProvider): DataFrame = {
 
-    import spark.implicits._    
+    import spark.implicits._
     import schemaProvider._
 
     schemaProvider.region.filter($"r_name" === "EUROPE")
