@@ -32,20 +32,7 @@ abstract class TpchQuery {
 
 object TpchQuery {
 
-  def outputDF(df: DataFrame, outputDir: String, className: String): Unit = {
-
-    if (outputDir == null || outputDir == "")
-      df.collect().foreach(println)
-    else
-      //df.write.mode("overwrite").json(outputDir + "/" + className + ".out") // json to avoid alias
-      df.write.mode("overwrite").format("com.databricks.spark.csv").option("header", "true").save(outputDir + "/" + className)
-  }
-
-  def executeQueries(sc: SparkContext, schemaProvider: TpchSchemaProvider, queryNum: Int): ListBuffer[(String, Float)] = {
-
-    // if set write results to hdfs, if null write to stdout
-    // val OUTPUT_DIR: String = "/tpch"
-    val OUTPUT_DIR: String = "file://" + new File(".").getAbsolutePath() + "/dbgen/output"
+  def executeQueries(spark: SparkSession, schemaProvider: TpchSchemaProvider, queryNum: Int): ListBuffer[(String, Float)] = {
 
     val results = new ListBuffer[(String, Float)]
 
@@ -85,7 +72,7 @@ object TpchQuery {
       .config("spark.sql.orc.impl", "native")
       .appName("Spark-TPCH Benchmark")
       .getOrCreate()
-
+    
     // read from hdfs
     val INPUT_DIR = "hdfs://namenode:8020/"
 
