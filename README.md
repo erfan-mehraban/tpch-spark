@@ -9,6 +9,7 @@ add following library to `jars/` folder:
 
 ```bash
 wget http://repo1.maven.org/maven2/org/xerial/snappy/snappy-java/1.1.4/snappy-java-1.1.4.jar
+mv snappy-java-1.1.4.jar /usr/spark-2.3.0/jars/
 ```
 
 install sbt:
@@ -18,6 +19,12 @@ echo "deb https://dl.bintray.com/sbt/debian /" | sudo tee -a /etc/apt/sources.li
 sudo apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv 2EE0EA64E40A89B84B2DF73499E82A75642AC823
 sudo apt update
 sudo apt install sbt
+```
+
+install dstat:
+
+```bash
+apt update; apt install -y dstat
 ```
 
 ### Running

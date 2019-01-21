@@ -1,5 +1,6 @@
 package main.scala
 
+import scala.sys.process.Process
 import org.apache.spark.sql.SparkSession
 import java.io.BufferedWriter
 import java.io.File
@@ -44,17 +45,14 @@ object TpchQuery {
     }
 
     for (queryNo <- fromNum to toNum) {
-      val t0 = System.nanoTime()
-
+      val start_time = System.nanoTime()
       val query = Class.forName(f"main.scala.Q${queryNo}%02d").newInstance.asInstanceOf[TpchQuery]
-
-      query.execute(spark, schemaProvider).show()
-
-      val t1 = System.nanoTime()
-
-      val elapsed = (t1 - t0) / 1000000000.0f // second
+      val dstat_process = Process(s"dstat --full --output /root/"+queryNo+".dstat").run
+      query.execute(spark, schemaProvider).collect()
+      dstat_process.destroy()
+      val end_time = System.nanoTime()
+      val elapsed = (end_time - start_time) / 1000000000.0f // second
       results += new Tuple2(query.getName(), elapsed)
-
     }
 
     return results
