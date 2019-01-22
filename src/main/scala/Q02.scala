@@ -18,7 +18,7 @@ class Q02 extends TpchQuery {
       .filter($"r_name" === "ASIA")
       .join(nation, $"r_regionkey" === nation("n_regionkey"))
       .join(supplier, $"n_nationkey" === supplier("s_nationkey"))
-      .join(partsupp, supplier("s_suppkey") === partsupp("ps_suppkey"))
+      .join(partsupp, supplier("s_suppkey") === partsupp("ps_supkey"))
     //.select($"ps_partkey", $"ps_supplycost", $"s_acctbal", $"s_name", $"n_name", $"s_address", $"s_phone", $"s_comment")
 
     val part_type = part

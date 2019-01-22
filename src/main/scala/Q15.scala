@@ -23,14 +23,14 @@ class Q15 extends TpchQuery {
       .filter(
         $"l_shipdate" >= "1993-08-01"
         && $"l_shipdate" < "1993-11-01")
-      .select($"l_suppkey", decrease($"l_extendedprice", $"l_discount").as("value"))
-      .groupBy($"l_suppkey")
+      .select($"l_supkey", decrease($"l_extendedprice", $"l_discount").as("value"))
+      .groupBy($"l_supkey")
       .agg(sum($"value").as("total"))
     // .cache
 
     revenue.agg(max($"total").as("max_total"))
       .join(revenue, $"max_total" === revenue("total"))
-      .join(supplier, $"l_suppkey" === supplier("s_suppkey"))
+      .join(supplier, $"l_supkey" === supplier("s_suppkey"))
       .select($"s_suppkey", $"s_name", $"s_address", $"s_phone", $"total")
       .sort($"s_suppkey")
   }

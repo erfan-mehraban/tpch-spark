@@ -21,7 +21,7 @@ class Q11 extends TpchQuery {
     val tmp = nation.filter($"n_name" === "EGYPT")
       .join(supplier, $"n_nationkey" === supplier("s_nationkey"))
       .select($"s_suppkey")
-      .join(partsupp, $"s_suppkey" === partsupp("ps_suppkey"))
+      .join(partsupp, $"s_suppkey" === partsupp("ps_supkey"))
       .select($"ps_partkey", mul($"ps_supplycost", $"ps_availqty").as("value"))
     // .cache()
 

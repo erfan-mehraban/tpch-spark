@@ -26,11 +26,11 @@ class Q16 extends TpchQuery {
 
     supplier.filter(!complains($"s_comment"))
       // .select($"s_suppkey")
-      .join(partsupp, $"s_suppkey" === partsupp("ps_suppkey"))
-      .select($"ps_partkey", $"ps_suppkey")
+      .join(partsupp, $"s_suppkey" === partsupp("ps_supkey"))
+      .select($"ps_partkey", $"ps_supkey")
       .join(fparts, $"ps_partkey" === fparts("p_partkey"))
       .groupBy($"p_brand", $"p_type", $"p_size")
-      .agg(countDistinct($"ps_suppkey").as("supplier_count"))
+      .agg(countDistinct($"ps_supkey").as("supplier_count"))
       .sort($"supplier_count".desc, $"p_brand", $"p_type", $"p_size")
   }
 

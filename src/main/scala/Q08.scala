@@ -29,10 +29,10 @@ class Q08 extends TpchQuery {
     val nat = nation.join(supplier, $"n_nationkey" === supplier("s_nationkey"))
 
     val line = lineitem
-      .select($"l_partkey", $"l_suppkey", $"l_orderkey",
+      .select($"l_partkey", $"l_supkey", $"l_orderkey",
       decrease($"l_extendedprice", $"l_discount").as("volume"))
       .join(fpart, $"l_partkey" === fpart("p_partkey"))
-      .join(nat, $"l_suppkey" === nat("s_suppkey"))
+      .join(nat, $"l_supkey" === nat("s_suppkey"))
 
     nation
       .join(fregion, $"n_regionkey" === fregion("r_regionkey"))

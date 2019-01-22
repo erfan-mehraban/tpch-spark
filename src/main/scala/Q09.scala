@@ -23,8 +23,8 @@ class Q09 extends TpchQuery {
 
     val natSup = nation.join(supplier, $"n_nationkey" === supplier("s_nationkey"))
 
-    linePart.join(natSup, $"l_suppkey" === natSup("s_suppkey"))
-      .join(partsupp, $"l_suppkey" === partsupp("ps_suppkey")
+    linePart.join(natSup, $"l_supkey" === natSup("s_suppkey"))
+      .join(partsupp, $"l_supkey" === partsupp("ps_supkey")
         && $"l_partkey" === partsupp("ps_partkey"))
       .join(order, $"l_orderkey" === order("o_orderkey"))
       .select($"n_name", getYear($"o_orderdate").as("o_year"),

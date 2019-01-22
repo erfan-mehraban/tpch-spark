@@ -27,7 +27,7 @@ class Q05 extends TpchQuery {
       .join(supplier,
         $"n_nationkey" === supplier("s_nationkey"))
       .join(lineitem,
-        $"s_suppkey" === lineitem("l_suppkey"))
+        $"s_suppkey" === lineitem("l_supkey"))
       .select($"n_name",
         $"l_extendedprice", $"l_discount", $"l_orderkey", $"s_nationkey")
       .join(forders,

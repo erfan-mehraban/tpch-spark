@@ -16,7 +16,7 @@ case class Customer(
 case class Lineitem(
   l_orderkey: Long,
   l_partkey: Long,
-  l_suppkey: Long,
+  l_supkey: Long,
   l_linenumber: Long,
   l_quantity: Double,
   l_extendedprice: Double,
@@ -61,7 +61,7 @@ case class Part(
 
 case class Partsupp(
   ps_partkey: Long,
-  ps_suppkey: Long,
+  ps_supkey: Long,
   ps_availqty: Long,
   ps_supplycost: Double,
   ps_comment: String)
