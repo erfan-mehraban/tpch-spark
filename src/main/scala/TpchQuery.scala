@@ -39,7 +39,7 @@ object TpchQuery {
       val start_time = System.nanoTime()
       val query = Class.forName(f"main.scala.Q${queryNo}%02d").newInstance.asInstanceOf[TpchQuery]
       val dstat_process = Process("dstat -lcmdrsyTt --full --output /root/"+queryNo+".dstat").run
-      query.execute(spark, schemaProvider).collect()
+      query.execute(spark, schemaProvider).show()
       dstat_process.destroy()
       val end_time = System.nanoTime()
       val elapsed = (end_time - start_time) / 1000000000.0f // second
