@@ -82,10 +82,7 @@ case class Supplier(
 
 class TpchSchemaProvider(spark: SparkSession, inputDir: String, extension: String) {
 
-  var format_type = extension
-  if (extension == "avro"){
-    format_type = "com.databricks.spark.avro"
-  }
+  val format_type = extension
 
   val dfMap = Map(
     "customer" -> spark.read.format(format_type).load(inputDir+"customer."+extension),

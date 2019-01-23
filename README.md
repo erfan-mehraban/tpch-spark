@@ -45,7 +45,7 @@ spark-submit --class "main.scala.TpchQuery" --master spark://master:7077 target/
 ```
 
 where `[num1]` and `[num2]` is the number of the query to run e.g 0, 1, 2, ..., 22 (query from `[num1]` to `[num2]` will be executed)
-and `[format]` must be one of `parquet`, `avro`, `orc`
+and `[format]` must be one of `parquet` or `orc`
 and MASTER specifies the spark-mode e.g local, yarn, standalone etc...
 
 
