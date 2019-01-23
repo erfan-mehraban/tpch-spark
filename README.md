@@ -3,7 +3,7 @@
 TPC-H queries implemented in Spark using the DataFrames API.
 Tested under Spark 2.3.0
 
-##SetUp
+## SetUp
 
 add following library to `jars/` folder:
 
