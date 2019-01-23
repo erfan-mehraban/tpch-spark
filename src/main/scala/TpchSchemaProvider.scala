@@ -80,19 +80,19 @@ case class Supplier(
   s_acctbal: Double,
   s_comment: String)
 
-class TpchSchemaProvider(spark: SparkSession, inputDir: String, extension: String) {
+class TpchSchemaProvider(spark: SparkSession, inputDir: String) {
 
-  val format_type = extension
+  val format_type = "com.databricks.spark.avro"
 
   val dfMap = Map(
-    "customer" -> spark.read.format(format_type).load(inputDir+"customer."+extension),
-    "lineitem" -> spark.read.format(format_type).load(inputDir+"lineitem."+extension),
-    "nation" -> spark.read.format(format_type).load(inputDir+"nation."+extension),
-    "region" -> spark.read.format(format_type).load(inputDir+"region."+extension),
-    "order" -> spark.read.format(format_type).load(inputDir+"orders."+extension),
-    "part" -> spark.read.format(format_type).load(inputDir+"part."+extension),
-    "partsupp" -> spark.read.format(format_type).load(inputDir+"partsupp."+extension),
-    "supplier" -> spark.read.format(format_type).load(inputDir+"supplier."+extension)
+    "customer" -> spark.read.format(format_type).load(inputDir+"customer.avro"),
+    "lineitem" -> spark.read.format(format_type).load(inputDir+"lineitem.avro"),
+    "nation" -> spark.read.format(format_type).load(inputDir+"nation.avro"),
+    "region" -> spark.read.format(format_type).load(inputDir+"region.avro"),
+    "order" -> spark.read.format(format_type).load(inputDir+"orders.avro"),
+    "part" -> spark.read.format(format_type).load(inputDir+"part.avro"),
+    "partsupp" -> spark.read.format(format_type).load(inputDir+"partsupp.avro"),
+    "supplier" -> spark.read.format(format_type).load(inputDir+"supplier.avro")
   )
   // for implicits
   val customer = dfMap.get("customer").get

@@ -63,7 +63,6 @@ object TpchQuery {
 
     var fromNum = args(0).toInt;
     var toNum = args(1).toInt;
-    var extension = args(2)
 
     val spark = SparkSession
       .builder()
@@ -74,7 +73,7 @@ object TpchQuery {
     // read from hdfs
     val INPUT_DIR = "hdfs://namenode:8020/"
 
-    val schemaProvider = new TpchSchemaProvider(spark, INPUT_DIR, extension)
+    val schemaProvider = new TpchSchemaProvider(spark, INPUT_DIR)
 
     val output = new ListBuffer[(String, Float)]
     output ++= executeQueries(spark, schemaProvider, fromNum, toNum)
