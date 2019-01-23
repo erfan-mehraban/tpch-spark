@@ -1,4 +1,4 @@
-# tpch-spark
+# tpch-spark (AVRO FILESYSTEM FORMAT)
 
 TPC-H queries implemented in Spark using the DataFrames API.
 Tested under Spark 2.0.0
@@ -35,17 +35,13 @@ First compile using:
 sbt package
 ```
 
-Make sure you set the INPUT_DIR and OUTPUT_DIR in TpchQuery class before compiling to point to the
-location the of the input data and where the output should be saved.
-
 You can then run a query using:
 
 ```bash
-spark-submit --class "main.scala.TpchQuery" --master spark://master:7077 target/scala-2.11/spark-tpc-h-queries_2.11-1.0.jar [format] [num1] [num2]
+spark-submit --class "main.scala.TpchQuery" --master spark://master:7077 target/scala-2.11/spark-tpc-h-queries_2.11-1.0.jar [num1] [num2]
 ```
 
 where `[num1]` and `[num2]` is the number of the query to run e.g 0, 1, 2, ..., 22 (query from `[num1]` to `[num2]` will be executed)
-and `[format]` must be one of `parquet` or `orc`
 and MASTER specifies the spark-mode e.g local, yarn, standalone etc...
 
 
