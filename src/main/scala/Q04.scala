@@ -16,8 +16,8 @@ class Q04 extends TpchQuery {
 
     val forders = order
       .filter(
-        $"o_orderdate" >= "1995-05-03"
-        && $"o_orderdate" < "1995-08-03")
+        ($"o_orderdate"/1000).cast("timestamp") >= "1995-05-03"
+        && ($"o_orderdate"/1000).cast("timestamp") < "1995-08-03")
     val flineitems = lineitem
       .filter($"l_commitdate" < $"l_receiptdate")
       .select($"l_orderkey")
