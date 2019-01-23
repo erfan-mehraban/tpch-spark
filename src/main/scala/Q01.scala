@@ -21,7 +21,7 @@ class Q01 extends TpchQuery {
     val increase = udf { (x: Double, y: Double) => x * (1 + y) }
 
     schemaProvider.lineitem
-      .filter($"l_shipdate" <= "1998-09-01")
+      .filter(($"l_shipdate"/1000).cast("timestamp") <= "1998-09-01")
       .groupBy($"l_returnflag", $"l_linestatus")
       .agg(
         sum($"l_quantity"),

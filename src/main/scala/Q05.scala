@@ -18,8 +18,8 @@ class Q05 extends TpchQuery {
     val decrease = udf { (x: Double, y: Double) => x * (1 - y) }
 
     val forders = order
-      .filter($"o_orderdate" < "1996-10-01"
-        && $"o_orderdate" >= "1995-10-01")
+      .filter(($"o_orderdate"/1000).cast("timestamp") < "1996-10-01"
+        && ($"o_orderdate"/1000).cast("timestamp") >= "1995-10-01")
 
     region.filter($"r_name" === "MIDDLE EAST")
       .join(nation,

@@ -21,8 +21,8 @@ class Q15 extends TpchQuery {
 
     val revenue = lineitem
       .filter(
-        $"l_shipdate" >= "1993-08-01"
-        && $"l_shipdate" < "1993-11-01")
+        ($"l_shipdate"/1000).cast("timestamp") >= "1993-08-01"
+        && ($"l_shipdate"/1000).cast("timestamp") < "1993-11-01")
       .select($"l_supkey", decrease($"l_extendedprice", $"l_discount").as("value"))
       .groupBy($"l_supkey")
       .agg(sum($"value").as("total"))

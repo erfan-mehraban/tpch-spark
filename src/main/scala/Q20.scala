@@ -18,7 +18,7 @@ class Q20 extends TpchQuery {
 
     val color = udf { (x: String) => x.startsWith("navajo") }
 
-    val flineitem = lineitem.filter($"l_shipdate" >= "1993-01-01" && $"l_shipdate" < "1994-01-01")
+    val flineitem = lineitem.filter(($"l_shipdate"/1000).cast("timestamp") >= "1993-01-01" && ($"l_shipdate"/1000).cast("timestamp") < "1994-01-01")
       .groupBy($"l_partkey", $"l_supkey")
       .agg((sum($"l_quantity") * 0.5).as("sum_quantity"))
 

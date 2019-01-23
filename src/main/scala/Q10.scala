@@ -21,8 +21,8 @@ class Q10 extends TpchQuery {
 
     order
       .filter(
-        $"o_orderdate" < "1994-06-18"
-        && $"o_orderdate" >= "1994-03-18")
+        ($"o_orderdate"/1000).cast("timestamp") < "1994-06-18"
+        && ($"o_orderdate"/1000).cast("timestamp") >= "1994-03-18")
       .join(customer, $"o_custkey" === customer("c_custkey"))
       .join(nation, $"c_nationkey" === nation("n_nationkey"))
       .join(flineitem, $"o_orderkey" === flineitem("l_orderkey"))

@@ -17,8 +17,8 @@ class Q06 extends TpchQuery {
 
     lineitem
       .filter(
-        $"l_shipdate" >= "1994-05-18"
-        && $"l_shipdate" < "1995-05-18"
+        ($"l_shipdate"/1000).cast("timestamp") >= "1994-05-18"
+        && ($"l_shipdate"/1000).cast("timestamp") < "1995-05-18"
         && $"l_discount" >= (0.3 - 0.01)
         && $"l_discount" <= (0.3 + 0.01)
         && $"l_quantity" < 24)

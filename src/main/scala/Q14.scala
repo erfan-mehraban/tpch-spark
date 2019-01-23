@@ -22,8 +22,8 @@ class Q14 extends TpchQuery {
     part
       .join(lineitem,
         $"l_partkey" === $"p_partkey"
-        && $"l_shipdate" >= "1996-03-20"
-        && $"l_shipdate" < "1996-04-20")
+        && ($"l_shipdate"/1000).cast("timestamp") >= "1996-03-20"
+        && ($"l_shipdate"/1000).cast("timestamp") < "1996-04-20")
       .select($"p_type", reduce($"l_extendedprice", $"l_discount").as("value"))
       .agg(sum
         (promo($"p_type", $"value")) * 100 / sum($"value"))

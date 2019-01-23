@@ -18,7 +18,7 @@ class Q03 extends TpchQuery {
     val decrease = udf { (x: Double, y: Double) => x * (1 - y) }
 
     val fcust = customer.filter($"c_mktsegment" === "AUTOMOBILE")
-    val forders = order.filter($"o_orderdate" < "1994-06-13")
+    val forders = order.filter(($"o_orderdate"/1000).cast("timestamp") < "1994-06-13")
     val flineitems = lineitem.filter($"l_shipdate" > "1994-06-13")
 
     fcust

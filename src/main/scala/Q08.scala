@@ -22,8 +22,8 @@ class Q08 extends TpchQuery {
     val fregion = region.filter($"r_name" === "EUROPE")
     val forder = order
       .filter(
-        $"o_orderdate" <= "1996-12-31"
-        && $"o_orderdate" >= "1995-01-01")
+        ($"o_orderdate"/1000).cast("timestamp") <= "1996-12-31"
+        && ($"o_orderdate"/1000).cast("timestamp") >= "1995-01-01")
     val fpart = part.filter($"p_type" === "LARGE BRUSHED STEEL")
 
     val nat = nation.join(supplier, $"n_nationkey" === supplier("s_nationkey"))
