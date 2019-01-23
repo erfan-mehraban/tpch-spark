@@ -3,7 +3,7 @@
 TPC-H queries implemented in Spark using the DataFrames API.
 Tested under Spark 2.3.0
 
-# SetUp
+##SetUp
 
 add following library to `jars/` folder:
 
@@ -47,3 +47,7 @@ spark-submit --class "main.scala.TpchQuery" --master spark://master:7077 target/
 where `[num1]` and `[num2]` is the number of the query to run e.g 0, 1, 2, ..., 22 (query from `[num1]` to `[num2]` will be executed)
 and `[format]` must be one of `parquet` or `orc`
 and MASTER specifies the spark-mode e.g local, yarn, standalone etc...
+
+dstat reports will be saved in a file which you cam edit deatils in `TpchQuery.executeQueries` function.
+
+Also elepased time reports will be saved in `TIMES.txt` file in pwd.
